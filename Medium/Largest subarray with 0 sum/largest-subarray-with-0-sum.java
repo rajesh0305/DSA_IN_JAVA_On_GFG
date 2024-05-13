@@ -60,7 +60,7 @@ class GfG
         // }
         // return maxlen;
         
-        // Approach(3) using HashMap()--->O(nlogn)
+        // Approach(3) using HashMap()--->O(n)
         
         int maxlen = 0;
         int sum =0;
@@ -78,5 +78,6 @@ class GfG
             }
         }
         return maxlen;
+       
     }
 }
