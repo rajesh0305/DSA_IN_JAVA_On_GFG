@@ -149,7 +149,7 @@ class Solution
         //     }
         
         // return ans;
-            ArrayList<Integer> ans = new ArrayList<>();
+       ArrayList<Integer> ans = new ArrayList<>();
         if(root == null) return ans;
         Queue < Node > q = new LinkedList<>();
         q.offer(root);
