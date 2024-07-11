@@ -71,13 +71,27 @@ class BST {
     // Function to search a node in BST.
     boolean search(Node root, int x) {
         // Your code here
-      ArrayList<Integer>ans = new ArrayList<Integer>();
-      ans = make(root);
-      for(int i= 0;i<ans.size();i++){
-          if(ans.get(i)==x){
-              return true;
-          }
-      }
-      return false;
+    //   ArrayList<Integer>ans = new ArrayList<Integer>();
+    //   ans = make(root);
+    //   for(int i= 0;i<ans.size();i++){
+    //       if(ans.get(i)==x){
+    //           return true;
+    //       }
+    //   }
+    //   return false;
+    
+    if(root ==null){
+        return false;
+    }
+    if(root.data==x){
+        return true;
+    }else if(root.data>x){
+        //left subtree
+        return search(root.left,x);
+    }else{
+        //right subtree
+        return search(root.right,x);
+    }
+   
     }
 }
