@@ -147,8 +147,24 @@ class Solution {
     return root;
     }
     // Return the root of the modified tree after removing all the half nodes.
-    public static Node RemoveHalfNodes(Node root) {
+    public  Node RemoveHalfNodes(Node root) {
         // Code Here
-        return remove(root);
+        // return remove(root);
+              // Code Here
+        if(root == null)    return null;
+        
+        return solve(root);
+    }
+    
+    private Node solve(Node root){
+        if(root.left == null && root.right == null){
+            return root;   
+        }else if(root.left != null && root.right != null){
+            root.left = solve(root.left);
+            root.right = solve(root.right);
+            return root;
+        }else{
+            return root.left == null ? solve(root.right) : solve(root.left);
+        }
     }
 }
