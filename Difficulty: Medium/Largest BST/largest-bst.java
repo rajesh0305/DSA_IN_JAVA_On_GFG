@@ -110,80 +110,112 @@ class GFG
 //         left = right = null; 
 //     } 
 // }
-
+class nodeValue{
+    public int maxvalue,minvalue,maxsize;
+    
+    nodeValue(int minvalue,int maxvalue,int maxsize){
+        this.maxvalue  = maxvalue;
+        this.minvalue = minvalue;
+        this.maxsize = maxsize;
+    }
+};
 
 class Solution{
-        static class Info {
-        public int maxi;
-        public int mini;
-        public boolean isBST;
-        public int size;
+    // public static nodeValue helper(Node root){
+    //     if(root==null){
+    //         return new nodeValue(Integer.MAX_VALUE,Integer.MIN_VALUE,0);
+    //     }
+    //     nodeValue left = helper(root.left);
+    //     nodeValue right = helper(root.right);
         
-        public Info(int maxi, int mini, boolean isBST, int size) {
-            this.maxi = maxi;
-            this.mini = mini;
-            this.isBST = isBST;
+    //     if(left.maxvalue<root.data && right.minvalue>root.data){
+    //         return new nodeValue(Math.min(root.data,left.minvalue),Math.max(root.data,roght.maxvalue),(left.maxsize+right.maxsize+1));
+    //     }
+    //     return new nodeValue(Integer.MIN_VALUE,Integer.MAX_VALUE,Math.max(left.maxsize,right.maxsize));
+    // }
+     static int MAX = Integer.MAX_VALUE;
+    static int MIN = Integer.MIN_VALUE;
+
+    static class nodeInfo {
+        int size; // Size of subtree
+        int max; // Min value in subtree
+        int min; // Max value in subtree
+        boolean isBST; // If subtree is BST
+
+        nodeInfo() {}
+
+        nodeInfo(int size, int max, int min, boolean isBST)
+        {
             this.size = size;
+            this.max = max;
+            this.min = min;
+            this.isBST = isBST;
         }
-             public Info() {
-            this.maxi = Integer.MIN_VALUE;
-            this.mini = Integer.MAX_VALUE;
-            this.isBST = true;
-            this.size = 0;
+    }
+
+    static nodeInfo largestBST(Node root)
+    {
+
+        // Base case : When the current subtree is empty or
+        // the node corresponds to a null.
+        if (root == null) {
+            return new nodeInfo(0, Integer.MIN_VALUE,
+                                Integer.MAX_VALUE, true);
         }
-        }
-        private static Info solve(Node root, int[] ans) {
-        if(root == null) {
-            return new Info();
-        }
-        
-        Info left = solve(root.left, ans);
-        Info right = solve(root.right, ans);
-        
-        int mini = Math.min(root.data, Math.min(left.mini, right.mini));
-        int maxi = Math.max(root.data, Math.max(left.maxi, right.maxi));
-        
-        boolean isBST = (left.isBST && right.isBST && root.data > left.maxi && root.data < right.mini);
-        
-        int size = isBST ? left.size + right.size + 1 : 0;
-        
-        ans[0] = Math.max(ans[0], size);
-        
-        return new Info(maxi, mini, isBST, size);
+        // We will here do the postorder traversal since we
+        // want our left and right subtrees to be computed
+        // first.
+
+        // Recur for left subtree and right subtrees
+        nodeInfo left = largestBST(root.left);
+        nodeInfo right = largestBST(root.right);
+
+        // Create a new nodeInfo variable to store info
+        // about the current node.
+        nodeInfo returnInfo = new nodeInfo();
+
+        returnInfo.min = Math.min(left.min, root.data);
+        returnInfo.max = Math.max(right.max, root.data);
+        returnInfo.isBST = left.isBST && right.isBST
+                           && root.data > left.max
+                           && root.data < right.min;
+
+        /*
+        If suppose the left and right subtrees of the
+        current node are BST and the current node value is
+        greater than the maximum value in the left subtree
+        and also the current node value is smaller that the
+        minimum value in the right subtree (Basic conditions
+        for the formation of BST) then our whole subtree
+        with the root as current root can be consider as a
+        BST. Hence the size of the BST will become size of
+        left BST subtree + size of right BST subtree +
+        1(adding current node).
+
+        Else we will consider the largest of the left BST or
+        the  right BST.
+        */
+
+        /*We need to find maximum height BST subtree then
+        adding the height of left an right subtree will not
+        give the maximum height, we need to find max.
+        */
+        if (returnInfo.isBST)
+
+            // Calculate the size of subtree if
+            // this is a BST
+            returnInfo.size = left.size + right.size + 1;
+        else
+            returnInfo.size
+                = Math.max(left.size, right.size);
+
+        return returnInfo;
     }
     // Return the size of the largest sub-tree which is also a BST
-    // public static int findHeight(Node root){
-    //     if(root==null){
-    //         return 0;
-    //     }
-    //     if(root.left==null && root.right==null)return 1;
-    //     return (1+Math.max(findHeight(root.left),findHeight(root.right)));
-    // }
-    // public static boolean isBST(Node root,int min,int max){
-    //     if(root==null){
-    //         return true;
-    //     }
-    //     if(root.data>min || root.data<max){
-    //         return false;
-    //     }else
-    //     return (isBST(root.right,root.data+1,max)&&isBST(root.left,min,root.data-1));
-    // }
     static int largestBst(Node root)
     {
         // Write your code here
-        
-        // if(root==null){
-        //     return 0;
-        // }
-        // if(isBST(root,Integer.MIN_VALUE,Integer.MAX_VALUE))
-        //     return findHeight(root);
-        //     else
-        //         return Math.max(largestBst(root.left),largestBst(root.right));
-        if (root == null) return 0;
-        
-        int[] maxSize = new int[1];
-        solve(root, maxSize);
-        return maxSize[0];    
+    return largestBST(root).size;
     }
     
 }
