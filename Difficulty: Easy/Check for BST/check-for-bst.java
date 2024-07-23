@@ -108,40 +108,15 @@ class GfG {
 // User function Template for Java
 
 class Solution {
-   public static ArrayList<Integer> inorderTraversal(Node root) {
-        ArrayList<Integer> result = new ArrayList<>();
-        if (root != null) {
-            result.addAll(inorderTraversal(root.left));
-            result.add(root.data);
-            result.addAll(inorderTraversal(root.right));
-        }
-        return result;
-   }
-    // Function to check whether a Binary Tree is BST or not.
     boolean isBST(Node root) {
-        // code here.
-    //   if(root==null){
-    //       return true;
-    //   }
-    //   if(root.left!=null && root.left.data>=root.data){
-    //       return false;
-    //   }
-    //   if(root.right!=null && root.right.data<=root.data){
-    //       return false;
-    //   }
-    
-    // return ((isBST(root.left))&&(isBST(root.right)));
-      if (root == null) {
-            return true; 
-        }
-        ArrayList<Integer> inorder = inorderTraversal(root);
-        for (int i = 1; i < inorder.size(); i++) {
-            if (inorder.get(i) <= inorder.get(i - 1)) {
-                return false;
-            }
-        }
-
-   return true;
-
+        return isValid(root,Integer.MIN_VALUE,Integer.MAX_VALUE);
+    }
+    boolean isValid(Node root,int min,int max){
+        if(root==null)return true;
+        
+        if(root.data<min || root.data>max)
+        return false;
+        
+        return (isValid(root.left,min,root.data-1)&&isValid(root.right,root.data+1,max));
     }
 }
