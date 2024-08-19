@@ -31,27 +31,51 @@ class GFG {
 // } Driver Code Ends
 
 
-class Solution
-{
-       static int mod=1000000007;
-    int solver(int n,int dp[]){
-        if(n<0) return 0;
-        if(n==0)
-        return 1;
-        
-        if(dp[n]!=-1)
-        return dp[n]%mod;
-        
-        return dp[n]=(solver(n-1,dp)%mod+solver(n-2,dp)%mod)%mod;
-    }
+class Solution{
     //Function to count number of ways to reach the nth stair.
-    int countWays(int n)
-    {
+    int mod = 1000000007;
+    int countWays(int n){
         
-        // your code here
-         int dp[]=new int[n+1];
-       Arrays.fill(dp,-1);
-       return solver(n,dp);
+        // --> Memorization :-
+        
+            // int[] dp = new int[n+1];
+            // Arrays.fill( dp , -1);
+            // return helper( n , dp) % mod;
+        
+        // Tabulation :-
+        
+            // int[] dp = new int[n+1];
+            // dp[0] = dp[1] = 1;
+            
+            // for( int i=2 ; i <= n ; i++ ) {
+            //     dp[i] = dp[i-1]%mod + dp[i-2]%mod;
+            // }
+            
+            // return dp[n]%mod;
+            
+        // Space Optimized :-
+            
+            int prev = 1 , prev2 = 1;
+            int cur;
+            for( int i=2 ; i <= n ; i++ ){
+                cur = prev%mod + prev2 % mod;
+                prev2 = prev;
+                prev = cur;
+            }
+            
+            return prev % mod;
     }
+    
+    // --> Memorization :-
+    
+        // public int helper( int n , int[] dp){
+            
+        //     if(n == 0 ) return 1;
+        //     if( n == 1 ) return 1;
+            
+        //     if( dp[n] != -1 ) return dp[n];
+            
+        //     return dp[n] = helper(n-1 , dp)%mod + helper(n-2 , dp)%mod;
+        // }
 }
 
