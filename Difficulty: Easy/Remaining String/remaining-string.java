@@ -25,17 +25,14 @@ class GFG {
 class Solution {
     public String printString(String s, char ch, int count) {
         // code here
-        String sub = "";
-        if(s.length()==0){
-            return sub;
-        }
-        for(int i = 0;i<s.length();i++){
-            char c = s.charAt(i);
-            if(c==ch && count!=0){
-                count--;
+         int c = 0;
+        int n = s.length();
+        for(int i=0; i<n; i++){
+            if(s.charAt(i) == ch){
+                c++;
             }
-            if(c==ch && count==0){
-                return s.substring(i+1,s.length());
+            if(c == count){
+                return s.substring(i+1);
             }
         }
         return "";
