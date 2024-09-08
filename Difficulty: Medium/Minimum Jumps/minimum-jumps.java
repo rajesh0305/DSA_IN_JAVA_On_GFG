@@ -1,22 +1,33 @@
 //{ Driver Code Starts
+// Initial Template for Java
+
 import java.io.*;
-import java.lang.*;
 import java.util.*;
 
-class GFG {
-    public static void main(String[] args) throws IOException {
+public class Main {
 
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int t = Integer.parseInt(br.readLine());
-
+        int t;
+        t = Integer.parseInt(br.readLine());
         while (t-- > 0) {
-            int size = Integer.parseInt(br.readLine());
-            String[] arrStr = ((String)br.readLine()).split("\\s+");
-            int[] arr = new int[size];
-            for (int i = 0; i < size; i++) {
-                arr[i] = Integer.parseInt(arrStr[i]);
+            String line = br.readLine();
+            String[] tokens = line.split(" ");
+
+            // Create an ArrayList to store the integers
+            ArrayList<Integer> array = new ArrayList<>();
+
+            // Parse the tokens into integers and add to the array
+            for (String token : tokens) {
+                array.add(Integer.parseInt(token));
             }
-            System.out.println(new Solution().minJumps(arr, size));
+
+            int[] arr = new int[array.size()];
+            int idx = 0;
+            for (int i : array) arr[idx++] = i;
+
+            System.out.println(new Solution().minJumps(arr));
+            // System.out.println("~");
         }
     }
 }
@@ -25,54 +36,45 @@ class GFG {
 
 
 class Solution {
-    static int minJumps(int[] arr, int n) {
+    static int minJumps(int[] arr) {
         // your code here
-    // if(n==0){
-    //     return 0;
-    // }
-    // if(n==1){
-    //     return 0;
-    // }
-    // int range = arr[0];
-    // int step = arr[0];
-    // int jump= 1;
-    // for(int i =1;i<arr.length;i++){
-    //     if(i==n-1){
-    //         return jump;
+    //     int range = 0;
+    //     int l =0;
+    //     int jump = 0;
+    // while(range<arr.length-1){
+    //     int farthest =0;
+    //     for(int i = l;i<=range;i++){
+    //         farthest =Math.max(farthest,i+arr[i]);
     //     }
-    //     range = Math.max(range,i+arr[i]);
-    //     step= step-1;
-        
-    //     if(step==0){
-    //         jump = jump+1;
-    //         if(range<=i)
-    //             return -1;
-    //         step = range-i;
-    //     }
+    //     l =range;
+    //     range = farthest;
+    //     jump = jump+1;
     // }
-    // return -1;
-            int count = 0;
-        if (n == 0 || n == 1) {
-return 0;
- 
-}
-if (arr[0] == 0) {
-return -1;
-}
-int current = 0;
-        int maxJump = 0;
+    // return jump;
+      int jumps=0;
+        int currentIndex=0;
+        int farIndex=0;
         
-        for(int i =0;i<n;i++){
-        maxJump = Math.max(maxJump, arr[i] +i);
+        //if arr length is 0 or 1st element is 0
+        if(arr.length==0 || arr[0]==0) return -1;
         
-        if(i==current){
-            count++;
-            current = maxJump;
+        //for length 1
+        else if(arr.length==1) return 1;
+        
+        else {
+            for(int i=0; i<arr.length-1; i++){
+                farIndex=Math.max(farIndex, i+arr[i]);
+                
+                if(i==currentIndex){
+                    jumps++;
+                    currentIndex=farIndex;
+                    
+                    if(currentIndex>=arr.length-1) return jumps;
+                    
+                }
+                
+            }
         }
-        if(current >= n-1) return count;
-        
-        }
-        
-return -1;
-        }
+        return -1;
+    }
 }
