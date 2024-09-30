@@ -107,31 +107,29 @@ class Node
 }
 
 */
+//import java.util.Arrays;
 class Solution {
-    public static void helper(Node root,ArrayList<Integer>ans){
+    public static void traversed(Node root,ArrayList<Integer>ans){
         if(root==null){
             return ;
         }
-        helper(root.left,ans);
+        traversed(root.left,ans);
         ans.add(root.data);
-        helper(root.right,ans);
+        traversed(root.right,ans);
     }
     // Function to return a list of integers denoting the node
     // values of both the BST in a sorted order.
     public List<Integer> merge(Node root1, Node root2) {
         // Write your code here
-        ArrayList<Integer>ans1 = new ArrayList<Integer>();
-        ArrayList<Integer>ans2 = new ArrayList<Integer>();
-        helper(root1,ans1);
-        helper(root2,ans2);
-        ArrayList<Integer>res= new ArrayList<Integer>();
-        for(int i = 0;i<ans1.size();i++){
-            res.add(ans1.get(i));
-        }
-        for(int i =0;i<ans2.size();i++){
-            res.add(ans2.get(i));
-        }
-        Collections.sort(res);
-        return res;
+        List<Integer>arr = new ArrayList<Integer>();
+        ArrayList<Integer>ans = new ArrayList<>();
+          traversed(root1,ans);
+          traversed(root2,ans);
+             Collections.sort(ans);
+          for(int i =0;i<ans.size();i++){
+              arr.add(ans.get(i));
+          }
+       
+          return arr;
     }
 }
