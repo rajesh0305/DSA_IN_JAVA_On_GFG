@@ -34,22 +34,46 @@ class pair{
     }
 }
 class Solution {
-      
+   public static void bfs(int ro,int co,int visited[][],char grid[][]){
+       int n = grid.length;
+       int m = grid[0].length;
+       visited[ro][co] = 1;
+       Queue<pair>q = new LinkedList<>();
+       while(!q.isEmpty()){
+           int row = q.peek().x;
+           int col = q.peek().y;
+           
+           for(int delRow =-1;delRow<=1;delRow++){
+               for(int delcol =-1;delcol<=1;delcol++){
+                    int nrow = row+delRow;
+                    int ncol = col+delcol;
+                    if(nrow>=0 && nrow<n && ncol>=0 && ncol<m && grid[nrow][ncol]=='1' && visited[nrow][ncol]==0){
+                        visited[nrow][ncol] = 1;
+                        q.add(new pair(nrow,ncol));
+                        
+                    }
+               }
+           }
+       }
+       
+   }   
     public int numIslands(char[][] grid) {
         // Code here
           // Code here
-              int dp[][]=new int[grid.length][grid[0].length];
+       int dp[][]=new int[grid.length][grid[0].length];
         Queue<pair> que=new LinkedList<>();
         int count=0;
-        
+        int n = grid.length;
+        int m = grid[0].length;
       for(int i=0;i<grid.length;i++){
           for(int j=0;j<grid[0].length;j++){
-              
               if(dp[i][j]==0 && grid[i][j]=='1'){
                   pair temp=new pair(i,j);
                   que.add(temp);
                   count++;
+                //   bfs(n,m,dp,grid);
               }
+             
               while(!que.isEmpty()){
                   
                   pair a=que.poll();
@@ -99,6 +123,6 @@ class Solution {
              
           }
       }
-      return count;
+    return count;
     }
 }
