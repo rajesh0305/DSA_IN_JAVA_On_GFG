@@ -1,15 +1,17 @@
 //{ Driver Code Starts
+import java.io.*;
 import java.util.*;
-class Node{
+
+class Node {
     int data;
     Node next;
-    
-    Node(int a){
+
+    Node(int a) {
         data = a;
         next = null;
     }
-    
 }
+
 
 // } Driver Code Ends
 /*Complete the function below*/
@@ -20,53 +22,44 @@ class Node{
     Node(int a){  data = a; next = null; }
 }*/
 
-class Solution
-{
-    //Function to count nodes of a linked list.
-    public static int getCount(Node head)
-    {
-        
-        //Code here
-        Node temp = head;
+class Solution {
+    // Function to count nodes of a linked list.
+    public int getCount(Node head) {
+        // code here
         int count = 0;
-        if(head ==null){
-            return count;
-        }
-        while(temp.next!=null){
+        Node temp = head;
+        while(temp!=null){
             count = count+1;
             temp = temp.next;
         }
-        return count+1;
+        return count;
     }
 }
-    
 
 //{ Driver Code Starts.
-class LinkedList{
-    
-    public static void main(String[] args){
-        Scanner sc=new Scanner(System.in);
-        int t=sc.nextInt();
-        while(t-->0)
-        {
-            int n=sc.nextInt();
-            Node head = new Node(sc.nextInt());
+
+class LinkedList {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int t = Integer.parseInt(br.readLine());
+        while (t-- > 0) {
+            ArrayList<Integer> arr = new ArrayList<>();
+            String input = br.readLine();
+            StringTokenizer st = new StringTokenizer(input);
+            while (st.hasMoreTokens()) {
+                arr.add(Integer.parseInt(st.nextToken()));
+            }
+            Node head = new Node(arr.get(0));
             Node tail = head;
-            for(int i=0; i<n-1; i++)
-            {
-                tail.next = new Node(sc.nextInt());
+            for (int i = 1; i < arr.size(); ++i) {
+                tail.next = new Node(arr.get(i));
                 tail = tail.next;
             }
-            
             Solution ob = new Solution();
             System.out.println(ob.getCount(head));
         }
     }
-   
-    
-    
-    
 }
-
 
 // } Driver Code Ends
