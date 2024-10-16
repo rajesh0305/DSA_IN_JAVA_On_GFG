@@ -31,7 +31,6 @@ class GFG {
 }
 // } Driver Code Ends
 
-
 class Pair{
     int first;
     int second;
@@ -41,28 +40,29 @@ class Pair{
     }
 }
 class Solution {
-    public static boolean checkforcycle(int scr,int V,ArrayList<ArrayList<Integer>>adj,boolean vis[]){
-        vis[scr] = true;
-        Queue<Pair>q = new LinkedList<>();
-        q.add(new Pair(scr,-1));
-        
-        while(!q.isEmpty()){
-            int node =q.peek().first;
-            int parentnode = q.peek().second;
-            q.remove();
-            
-            for(int adjacentnode:adj.get(node)){
-                if(vis[adjacentnode]==false){
-                    vis[adjacentnode]=true;
-                    q.add(new Pair(adjacentnode,node));
-                }else if(parentnode!=adjacentnode){
-                    return true;
-                }
+    public static boolean isCycleExist(int V,ArrayList<ArrayList<Integer>>adj,boolean vis[],int src){
+     vis[src] = true;
+     Queue<Pair>q = new LinkedList<>();
+     q.add(new Pair(src,-1));
+     while(!q.isEmpty()){
+         int node = q.peek().first;
+         int parent = q.peek().second;
+         q.remove();
+         
+         for(int adjnode:adj.get(node)){
+             if(vis[adjnode]==false){
+                 vis[adjnode]= true;
+                 q.add(new Pair(adjnode,node));
+             }else{
+             if(parent!=adjnode){
+                 return true;
+             }
             }
-        }
-        return false;
+         }
+     }
+     return false;
+     
     }
-  
     // Function to detect cycle in an undirected graph.
     public boolean isCycle(int V, ArrayList<ArrayList<Integer>> adj) {
         // Code here
@@ -70,13 +70,13 @@ class Solution {
         for(int i = 0;i<V;i++){
             vis[i] = false;
         }
-     for(int i = 0;i<V;i++){
-         if(vis[i]==false){
-             if(checkforcycle(i,V,adj,vis)){
-                 return true;
-             }
-         }
-     }
-     return false;
+        for(int i = 0;i<V;i++){
+            if(vis[i]==false){
+                if(isCycleExist(V,adj,vis,i)){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
