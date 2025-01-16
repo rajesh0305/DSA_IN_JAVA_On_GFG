@@ -1,68 +1,63 @@
 //{ Driver Code Starts
-import java.util.Scanner;
+import java.io.*;
 import java.util.*;
-import java.lang.*;
-import java.util.HashMap;
 
-class Largest_Subarray
-{
-    public static void main(String args[])
-    {
-        Scanner sc = new Scanner(System.in);
-        int T = sc.nextInt();
-        while (T > 0)
-        {
-            int N = sc.nextInt();
-            int a[] = new int[N];
-            for (int i = 0; i < N; i++) 
-                a[i] = sc.nextInt();
-            
+public class Main {
+    public static void main(String[] args) throws IOException {
+        // Create BufferedReader for efficient input reading
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-            Solution g = new Solution();
-            int n = g.maxLen(a, a.length);
+        // Read number of test cases
+        int T = Integer.parseInt(br.readLine());
 
-            System.out.println(n);
+        // Process each test case
+        while (T-- > 0) {
+            // Read the entire line containing the array elements
+            String line = br.readLine();
 
-            T--;
+            // Split the line into an array of strings, then parse them as integers
+            String[] tokens = line.split("\\s+");
+            int[] a = new int[tokens.length];
+            for (int i = 0; i < tokens.length; i++) {
+                a[i] = Integer.parseInt(tokens[i]);
+            }
+
+            // Create the Solution object
+            Solution obj = new Solution();
+
+            // Call maxLen function and print the result
+            System.out.println(obj.maxLen(a));
         }
     }
 }
-
 // } Driver Code Ends
 
 
-
-
 class Solution {
-
-    // arr[] : the input array containing 0s and 1s
-    // N : size of the input array
-    
-    // return the maximum length of the subarray
-    // with equal 0s and 1s
-    int maxLen(int[] arr, int N)
-    {
+    public int maxLen(int[] arr) {
         // Your code here
-        HashMap<Integer,Integer>hm = new HashMap<>();
-        int sum = 0;
-        hm.put(0,-1);
-        int ans = 0;
-        for(int i = 0;i<arr.length;i++){
-            if(arr[i]==0){
-                sum+=-1;
-            }else if(arr[i]==1){
-                sum = sum+1;
+        int count = 0;
+        int o = 0;
+        // Create a HashMap to store the first occurrence of a given count
+        Map<Integer, Integer> map = new HashMap<>();
+        // Initialize with 0, because an equal number of 0's and 1's can start from the beginning
+        map.put(0, -1);
+        
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == 0) {
+                o++;
+            } else {
+                o--;
             }
-            if(hm.containsKey(sum)){
-                int index= hm.get(sum);
-                int len = i-index;
-                if(ans<len){
-                    ans =len;
-                }
-            }else{
-                hm.put(sum,i);
+            
+            // If the count has been seen before, calculate the length of the subarray
+            if (map.containsKey(o)) {
+                count = Math.max(count, i - map.get(o));
+            } else {
+                // Otherwise, store the first occurrence of the count
+                map.put(o, i);
             }
         }
-        return ans;
+        return count;
     }
 }
