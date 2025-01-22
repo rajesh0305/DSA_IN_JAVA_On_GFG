@@ -1,6 +1,7 @@
 //{ Driver Code Starts
 // driver
 
+import java.io.*;
 import java.util.*;
 
 
@@ -20,91 +21,39 @@ class Node {
 */
 
 class Solution {
-      public static Node reverse(Node node)
-    {
-        Node prev = null;
-        Node current = node;
-        Node next = null;
-        while (current != null) {
-            next = current.next;
-            current.next = prev;
-            prev = current;
-            current = next;
-        }
-        node = prev;
-        return node;
-    }
-    // Function to add two numbers represented by linked list.
     static Node addTwoLists(Node num1, Node num2) {
         // code here
-        // return head of sum list
-    //     Node dummy = new Node(0);
-    //     Node result = dummy;
-    //     int c = 0;
-       
-    //     num1 = reverse(num1);
-    //     num2= reverse(num2);
         
-    //     // if(num1.next==null && num2==null){
-    //     //     return num1;
-    //     // }
-    //     // if(num1==null && num2.next==null){
-    //     //     return num2;
-    //     // }
-    // while(num1!=null || num2!=null || c == 1){
-    //      int sum = 0;
-    //           if(num1!=null){
-    //               sum = sum+num1.data;
-    //               num1 = num1.next;
-    //           }
-    //           if(num2!=null){
-    //               sum = sum+num2.data;
-    //               num2 = num2.next;
-    //           }
-    //           sum = sum+c;
-    //           c = sum/10;
-    //          Node newnode = new Node(sum%10);
-    //          result.next =newnode;
-    //          result = result.next;
-    // }
-    //   Node ans=reverse(result.next);
-    //     while(ans.data==0 && ans.next!=null){
-    //         ans=ans.next;
-    //     }
-    // return ans;
-    Node l1=reverse(num1);
-        Node l2=reverse(num2);
-        
-        Node temp=new Node(0);
-        Node temp2=temp;
-        
-        int carry =0;
-        int sum=0;
-        while(l1!=null || l2!=null|| carry==1)
-        {
-            sum=0;
-            if(l1!=null)
-            {
-                sum+=l1.data;
-                l1=l1.next;
-            }
-            if(l2!=null)
-            {
-                sum+=l2.data;
-                l2=l2.next;       
-            }
-            sum+=carry;
-            carry=sum/10;
-            Node n=new Node(sum%10);
-            temp2.next=n;
-            temp2=temp2.next;
+        Stack<Integer> s1 = new Stack<>();
+        Stack<Integer> s2 = new Stack<>();
+        while(num1 != null){
+            s1.push(num1.data);
+            num1 = num1.next;
         }
-        Node ans=reverse(temp.next);
-        while(ans.data==0 && ans.next!=null){
-            ans=ans.next;
+         while(num2 != null){
+            s2.push(num2.data);
+            num2 = num2.next;
         }
-        return ans;
- }
+        Node result = null;
+        int carry = 0;
+        while(!s1.isEmpty() || !s2.isEmpty() || carry != 0){
+            int val1 = s1.isEmpty() ? 0: s1.pop();
+            int val2 = s2.isEmpty()? 0: s2.pop();
+            int sum = val1 + val2 + carry;
+           
+            Node newNode = new Node(sum % 10);
+            newNode.next = result;
+            result = newNode;
+            carry = sum / 10;
+            
+        }
+        while (result != null && result.data == 0) {
+        result = result.next;
+    }
+
+    // If the result is empty (in case of 0), return a single node with 0
+    return result != null ? result : new Node(0);
+    }
 }
 
 //{ Driver Code Starts.
@@ -129,37 +78,38 @@ class GfG {
         System.out.println();
     }
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int T = sc.nextInt();
-
+    public static void main(String[] args) throws IOException {
+        BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
+        int T = Integer.parseInt(read.readLine());
         while (T-- > 0) {
 
-            int n = sc.nextInt();
-            int val = sc.nextInt();
+            String str[] = read.readLine().trim().split(" ");
+            int n = str.length;
 
-            Node num1 = new Node(val);
+            Node num1 = new Node(Integer.parseInt(str[0]));
             Node tail = num1;
-            for (int i = 0; i < n - 1; i++) {
-                val = sc.nextInt();
+            for (int i = 1; i < n; i++) {
+                int val = Integer.parseInt(str[i]);
                 tail.next = new Node(val);
                 tail = tail.next;
             }
 
-            int m = sc.nextInt();
-            val = sc.nextInt();
+            String str2[] = read.readLine().trim().split(" ");
+            int m = str2.length;
 
-            Node num2 = new Node(val);
+            Node num2 = new Node(Integer.parseInt(str2[0]));
             tail = num2;
-            for (int i = 0; i < m - 1; i++) {
-                val = sc.nextInt();
-                tail.next = new Node(val);
+            for (int i = 1; i < m; i++) {
+
+                tail.next = new Node(Integer.parseInt(str2[i]));
                 tail = tail.next;
             }
 
             Solution g = new Solution();
             Node res = g.addTwoLists(num1, num2);
             printList(res);
+
+            System.out.println("~");
         }
     }
 }
